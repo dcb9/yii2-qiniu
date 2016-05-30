@@ -1,0 +1,8 @@
+<?php
+
+return [
+    'id' => 'tests',
+    'basePath' => dirname(__DIR__),
+    'components' => [
+    ],
+];

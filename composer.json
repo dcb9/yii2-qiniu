@@ -1,0 +1,32 @@
+{
+  "name": "dcb9/yii2-qiniu",
+  "type": "yii2-extension",
+  "description": "The Qiniu integration for the Yii framework",
+  "keywords": [
+    "dcb9",
+    "yii2",
+    "qiniu",
+    "helper"
+  ],
+  "license": "BSD-3-Clause",
+  "authors": [
+    {
+      "name": "dcb9",
+      "email": "bob@phpor.me"
+    }
+  ],
+  "require": {
+    "yiisoft/yii2": "*",
+    "php": ">=5.4.0",
+    "qiniu/php-sdk": "v7.0.7",
+    "league/flysystem": "~1.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "dcb9\\qiniu\\": "./src"
+    }
+  }
+}
