@@ -1,0 +1,20 @@
+language: php
+
+php:
+  - 5.5
+
+install:
+  - composer global require "fxp/composer-asset-plugin:~1.1.1"
+  - composer require codeclimate/php-test-reporter --dev
+  - composer install --no-progress --no-interaction
+  - cp ./tests/main.php-example ./tests/main.php
+
+script:
+  - ./vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+
+addons:
+  code_climate:
+    repo_token: 7bf1b66f75b8de587bf4b0df6e11591b34b0dae27f67b9b0fe88c92e7a9e840f
+
+after_script:
+  - vendor/bin/test-reporter

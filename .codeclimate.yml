@@ -1,0 +1,20 @@
+---
+engines:
+  fixme:
+    enabled: true
+  phpcodesniffer:
+    enabled: true
+    checks:
+      PSR2 Classes PropertyDeclaration Underscore:
+        enabled: false
+      CleanCode/StaticAccess:
+        enabled: false
+      Naming/ShortVariable:
+        enabled: false
+  phpmd:
+    enabled: true
+ratings:
+  paths:
+  - "**.php"
+exclude_paths:
+- tests/**/*
