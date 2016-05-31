@@ -41,9 +41,35 @@ To use this extension, simply add the following code in your application configu
 return [
     //....
     'components' => [
+        'qiniu' => [
+            'class' => 'dcb9\qiniu\Component',
+            'accessKey' => 'YOUR_ACCESS_KEY',
+            'secretKey' => 'YOUR_SECRET_KEY',
+            'disks' => [
+                'testBucket' => [
+                    'bucket' => 'bucketOnQiniu',
+                    'baseUrl' => 'ACCESS_QINIU_URL',
+                    'isPrivate' => true,
+                ],
+            ],
+        ],
     ],
 ];
 ```
+
+[资源操作](http://developer.qiniu.com/code/v6/api/kodo-api/index.html#资源操作)
+--------------------
+
+资源操作就 [Flysystem](https://github.com/thephpleague/flysystem) 的一个扩展, 所以所有的调用方法与 [Flysystem](https://github.com/thephpleague/flysystem) 调用方法一致.
+
+```php
+// 获取 Disk
+$filesystem = Yii::$app->qiniu->getDisk('testBucket');
+
+$filesystem->has('hello.txt');
+```
+
+**[所有可调用的 API](http://flysystem.thephpleague.com/api/)**
 
 Tricks
 --------------------
