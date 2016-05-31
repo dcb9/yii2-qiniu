@@ -1,7 +1,7 @@
 Qiniu Extension for Yii2
 =================
 
-The Qiniu integration for the Yii framework"
+The Qiniu integration for the Yii framework
 
 [![Build Status](https://travis-ci.org/dcb9/yii2-qiniu.svg)](https://travis-ci.org/dcb9/yii2-qiniu)
 [![Code Climate](https://codeclimate.com/github/dcb9/yii2-qiniu/badges/gpa.svg)](https://codeclimate.com/github/dcb9/yii2-qiniu)
@@ -50,6 +50,7 @@ return [
                     'bucket' => 'bucketOnQiniu',
                     'baseUrl' => 'ACCESS_QINIU_URL',
                     'isPrivate' => true,
+                    'zone' => 'zone0', // 可设置为 zone0, zone1 @see \Qiniu\Zone
                 ],
             ],
         ],

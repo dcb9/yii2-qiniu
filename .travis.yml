@@ -7,7 +7,6 @@ install:
   - composer global require "fxp/composer-asset-plugin:~1.1.1"
   - composer require codeclimate/php-test-reporter --dev
   - composer install --no-progress --no-interaction
-  - cp ./tests/main.php-example ./tests/main.php
 
 script:
   - ./vendor/bin/phpunit --coverage-clover build/logs/clover.xml

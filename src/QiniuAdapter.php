@@ -2,6 +2,7 @@
 
 namespace dcb9\qiniu;
 
+use Qiniu\Zone;
 use Yii;
 use yii\base\Configurable;
 use yii\base\InvalidConfigException;
@@ -27,6 +28,8 @@ class QiniuAdapter extends AbstractAdapter implements Configurable
         return get_called_class();
     }
 
+    private $_zone;
+
     public function __construct($config = [])
     {
         if (!empty($config)) {
@@ -37,6 +40,25 @@ class QiniuAdapter extends AbstractAdapter implements Configurable
         } elseif ($this->baseUrl === null) {
             throw new InvalidConfigException('The "baseUrl" property must be set.');
         }
+        $zone = isset($config['zone']) ? $config['zone'] : 'zone0';
+        $this->setZone($zone);
+    }
+
+    public function getZone()
+    {
+        if (!$this->_zone) {
+            $this->setZone('zone0');
+        }
+
+        return $this->_zone;
+    }
+
+    public function setZone($zone)
+    {
+        if (!in_array($zone, ['zone1', 'zone0'])) {
+            throw new InvalidConfigException('The "zone" property must be "zone1" OR "zone0"');
+        }
+        $this->_zone = call_user_func(['Qiniu\Zone', $zone]);
     }
 
     /**
@@ -141,7 +163,7 @@ class QiniuAdapter extends AbstractAdapter implements Configurable
         \Qiniu\Config $config = null
     ) {
         if ($config === null) {
-            $config = new \Qiniu\Config();
+            $config = new \Qiniu\Config($this->_zone);
         }
         $resumeUploader = new ResumeUploader($this->getUploadToken(), $path, $resource, $size, null, $type, $config);
 
@@ -301,10 +323,23 @@ class QiniuAdapter extends AbstractAdapter implements Configurable
         rewind($stream);
         $result = $this->writeStream($path, $stream, $config);
         is_resource($stream) && fclose($stream);
-        $result['contents'] = $contents;
-        $result['mimetype'] = Util::guessMimeType($path, $contents);
+
+        if (is_array($result)) {
+            $result['contents'] = $contents;
+            $result['mimetype'] = Util::guessMimeType($path, $contents);
+        }
 
         return $result;
+    }
+
+    private $_lastError;
+
+    public function getLastError()
+    {
+        $lastError = $this->_lastError;
+        $this->_lastError = null;
+
+        return $lastError;
     }
 
     /**
@@ -315,6 +350,8 @@ class QiniuAdapter extends AbstractAdapter implements Configurable
         $size = Util::getStreamSize($resource);
         list(, $err) = $this->streamUpload($path, $resource, $size);
         if ($err !== null) {
+            $this->_lastError = $err;
+
             return false;
         }
 

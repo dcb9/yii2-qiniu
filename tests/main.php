@@ -6,13 +6,14 @@ return [
     'components' => [
         'qiniu' => [
             'class' => 'dcb9\qiniu\Component',
-            'accessKey' => 'YOUR_ACCESS_KEY',
-            'secretKey' => 'YOUR_SECRET_KEY',
+            'accessKey' => 'R4-d3lnAvzmfID4sSFxJ6gOyNBoyH50nASCfWGHJ',
+            'secretKey' => 'A1jlLqqFQbhUSnQbvyrirxzm7hbDgeIHbpyJo6lx',
             'disks' => [
                 'testBucket' => [
-                    'bucket' => 'bucketOnQiniu',
-                    'baseUrl' => 'ACCESS_QINIU_URL',
+                    'bucket' => 'testbucket',
+                    'baseUrl' => 'http://o81q3p7bv.bkt.clouddn.com',
                     'isPrivate' => true,
+                    'zone' => 'zone1',
                 ],
             ],
         ],
