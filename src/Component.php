@@ -2,6 +2,7 @@
 
 namespace dcb9\qiniu;
 
+use League\Flysystem\AdapterInterface;
 use Qiniu\Auth;
 use Yii;
 use yii\base\InvalidConfigException;
@@ -15,6 +16,8 @@ class Component extends \yii\base\Component
 {
     public $accessKey;
     public $secretKey;
+
+    private $_disks;
 
     /**
      * @var Auth
@@ -32,7 +35,54 @@ class Component extends \yii\base\Component
         if (!$this->secretKey) {
             throw new InvalidConfigException('secretKey can not be blank');
         }
+    }
 
-        $this->_auth = new Auth($this->accessKey, $this->secretKey);
+    protected function getAuth()
+    {
+        if (!$this->_auth) {
+            $this->_auth = new Auth($this->accessKey, $this->secretKey);
+        }
+
+        return $this->_auth;
+    }
+
+    /**
+     * @param array $disks
+     */
+    public function setDisks(array $disks)
+    {
+        foreach ($disks as $id => $component) {
+            $this->setDisk($id, $component);
+        }
+    }
+
+    public function setDisk($id, array $definition)
+    {
+        if (!isset($definition['class'])) {
+            $definition['class'] = QiniuAdapter::className();
+        }
+        /* @var $qiniuAdapter QiniuAdapter */
+        $qiniuAdapter = Yii::createObject($definition);
+        $qiniuAdapter->setAuth($this->getAuth());
+
+        $this->_disks[$id] = $this->createFilesystem($qiniuAdapter);
+    }
+
+    /**
+     * @param $id
+     * @return Filesystem
+     */
+    public function getDisk($id)
+    {
+        if (!isset($this->_disks[$id])) {
+            throw new \BadMethodCallException('Unknown disk id: ' . $id);
+        }
+
+        return $this->_disks[$id];
+    }
+
+    protected function createFilesystem(AdapterInterface $adapter, array $config = null)
+    {
+        return new Filesystem($adapter, $config);
     }
 }

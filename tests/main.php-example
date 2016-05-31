@@ -4,5 +4,17 @@ return [
     'id' => 'tests',
     'basePath' => dirname(__DIR__),
     'components' => [
+        'qiniu' => [
+            'class' => 'dcb9\qiniu\Component',
+            'accessKey' => 'YOUR_ACCESS_KEY',
+            'secretKey' => 'YOUR_SECRET_KEY',
+            'disks' => [
+                'testBucket' => [
+                    'bucket' => 'bucketOnQiniu',
+                    'baseUrl' => 'ACCESS_QINIU_URL',
+                    'isPrivate' => true,
+                ],
+            ],
+        ],
     ],
 ];
