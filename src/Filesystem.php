@@ -15,4 +15,12 @@ class Filesystem extends \League\Flysystem\Filesystem
     {
         return get_called_class();
     }
+
+    public function getUrl($path)
+    {
+        /* @var $adapter QiniuAdapter */
+        $adapter = $this->getAdapter();
+
+        return $adapter->getUrl($path);
+    }
 }

@@ -68,9 +68,12 @@ return [
 $filesystem = Yii::$app->qiniu->getDisk('testBucket');
 
 $filesystem->has('hello.txt');
+
+// 七牛独有 API
+$filesystem->getUrl('hello.txt');  // 获取访问地址
 ```
 
-**[所有可调用的 API](http://flysystem.thephpleague.com/api/)**
+**[其它所有可调用的 API](http://flysystem.thephpleague.com/api/)**
 
 #### [上传策略](http://developer.qiniu.com/article/developer/security/put-policy.html)
 

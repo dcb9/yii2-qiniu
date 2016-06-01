@@ -23,4 +23,40 @@ class FilesystemTest extends PHPUnit_Framework_TestCase
         ]);
         $component->setDisk('testBucket', '');
     }
+
+    /**
+     * @dataProvider urlDataProvider
+     */
+    public function testGetUrl($baseUrl, $path, $expect)
+    {
+        /* @var $component Component */
+        $component = Yii::createObject([
+            'class' => Component::className(),
+            'accessKey' => '111',
+            'secretKey' => '222',
+            'disks' => [
+                'testBucket' => [
+                    'bucket' => 'bucketOnQiniu',
+                    'baseUrl' => $baseUrl,
+                ]
+            ],
+        ]);
+        $this->assertEquals($expect, $component->getDisk('testBucket')->getUrl($path));
+    }
+
+    public function urlDataProvider()
+    {
+        return [
+            [
+                'http://xxx.xx.clouddn.com/',
+                'test.txt',
+                'http://xxx.xx.clouddn.com/test.txt'
+            ],
+            [
+                'http://xxx.xx.clouddn.com',
+                'test.txt',
+                'http://xxx.xx.clouddn.com/test.txt'
+            ],
+        ];
+    }
 }

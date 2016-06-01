@@ -182,7 +182,7 @@ class QiniuAdapter extends AbstractAdapter implements Configurable
     {
         $keyEsc = str_replace("%2F", "/", rawurlencode($path));
 
-        return $this->baseUrl . '/' . $keyEsc;
+        return rtrim($this->baseUrl, '/') . '/' . $keyEsc;
     }
 
     /**
