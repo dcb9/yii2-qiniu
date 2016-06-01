@@ -6,14 +6,14 @@ return [
     'components' => [
         'qiniu' => [
             'class' => 'dcb9\qiniu\Component',
-            'accessKey' => 'R4-d3lnAvzmfID4sSFxJ6gOyNBoyH50nASCfWGHJ',
-            'secretKey' => 'A1jlLqqFQbhUSnQbvyrirxzm7hbDgeIHbpyJo6lx',
+            'accessKey' => '0nOV0Qe99aHk3BjI6Eak-1y2IAYfGMyG6756X2BB',
+            'secretKey' => 'SSQpx6V7TDUnZBobJQiYdsjgGWH8WHOJP4M6gZtX',
             'disks' => [
                 'testBucket' => [
                     'bucket' => 'testbucket',
-                    'baseUrl' => 'http://o81q3p7bv.bkt.clouddn.com',
-                    'isPrivate' => true,
-                    'zone' => 'zone1',
+                    'baseUrl' => 'http://o82y2yum4.bkt.clouddn.com',
+                    'isPrivate' => false,
+                    'zone' => 'zone0',
                 ],
             ],
         ],

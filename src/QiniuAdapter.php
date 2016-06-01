@@ -14,7 +14,7 @@ use League\Flysystem\Util;
 use League\Flysystem\Config;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\Adapter\AbstractAdapter;
-
+use Qiniu\Config as QiniuConfig;
 
 /**
  * Class QiniuAdapter
@@ -160,12 +160,16 @@ class QiniuAdapter extends AbstractAdapter implements Configurable
         $resource,
         $size,
         $type = 'application/octet-stream',
-        \Qiniu\Config $config = null
+        QiniuConfig $config = null,
+        $token = null
     ) {
         if ($config === null) {
             $config = new \Qiniu\Config($this->_zone);
         }
-        $resumeUploader = new ResumeUploader($this->getUploadToken(), $path, $resource, $size, null, $type, $config);
+        if ($token === null) {
+            $token = $this->getUploadToken();
+        }
+        $resumeUploader = new ResumeUploader($token, $path, $resource, $size, null, $type, $config);
 
         return $resumeUploader->upload();
     }
@@ -348,7 +352,8 @@ class QiniuAdapter extends AbstractAdapter implements Configurable
     public function writeStream($path, $resource, Config $config)
     {
         $size = Util::getStreamSize($resource);
-        list(, $err) = $this->streamUpload($path, $resource, $size);
+        $token = $config->get('token');
+        list(, $err) = $this->streamUpload($path, $resource, $size, 'application/octet-stream', null, $token);
         if ($err !== null) {
             $this->_lastError = $err;
 

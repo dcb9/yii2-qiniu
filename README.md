@@ -72,6 +72,52 @@ $filesystem->has('hello.txt');
 
 **[所有可调用的 API](http://flysystem.thephpleague.com/api/)**
 
+#### [上传策略](http://developer.qiniu.com/article/developer/security/put-policy.html)
+
+默认设置 Policy 是使用 Array 的方式来设置的, 但是这种方式对程序员不是很友好,于是创建了一个 Policy 的类,但所有的操作还是跟操作数组一样.
+
+```php
+$policy = new \dcb9\qiniu\Policy();
+$policy->callbackUrl = '';
+$policy->callbackBody = '';
+```
+
+#### [获取 UploadToken](http://developer.qiniu.com/article/developer/security/upload-token.html)
+
+```php
+$qiniu = Yii::$app->qiniu;
+
+$token1 = $qiniu->getUploadToken('testbucket');
+
+$key = null;
+$expires = 3600;
+$policy = new \dcb9\qiniu\Policy();
+$policy->callbackUrl = '';
+$policy->callbackBody = '';
+
+// Fop @see src/Pfop.php
+$policy->persistentOps = \dcb9\qiniu\Pfop::instance()
+    ->avthumb('mp4')
+    ->wmImage('http://o82pobmde.bkt.clouddn.com/yii2-logo.png')
+    ->saveas('testbucket', 'after-ops' . date('Y-m-d H:i:s') . '.mp4')
+    ->__toString();
+$policy->persistentNotifyUrl = 'http://blog.phpor.me';
+
+$token2 = $qiniu->getUploadToken('testbucket', $key, $expires, $policy);
+```
+
+#### 使用 Token 上传文件
+
+```php
+$token = '<TOKEN>'; // @see 获取 UploadToken
+$config = ['token' => $token];
+$filesystem->writeStream($path, $stream, $config);
+
+$filesystem->write($path, $content, $config);
+
+$filesystem->put($path, $content, $config);
+```
+
 Tricks
 --------------------
 

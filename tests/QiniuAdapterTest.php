@@ -18,6 +18,9 @@ class QiniuAdapterTest extends PHPUnit_Framework_TestCase
         if ($disk->has('hello4.txt')) {
             $disk->delete('hello4.txt');
         }
+        if ($disk->has('/testdir/hello.txt')) {
+            $disk->delete('/testdir/hello.txt');
+        }
     }
 
     public static function tearDownAfterClass()
