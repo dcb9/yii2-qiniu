@@ -5,6 +5,13 @@ use dcb9\qiniu\Pfop;
 
 class PolicyTest extends PHPUnit_Framework_TestCase
 {
+    public static $path;
+
+    public static function setUpBeforeClass()
+    {
+        static::$path = 'testmp4' . date('Y-m-d H:i:s') . '.mp4';
+    }
+
     public function testBuilder()
     {
         $policy = new Policy();
@@ -47,7 +54,7 @@ class PolicyTest extends PHPUnit_Framework_TestCase
         }
         $stream = fopen($file, 'rb');
         $config = ['token' => $token];
-        $disk->writeStream('testmp4' . date('Y-m-d H:i:s') . '.mp4', $stream, $config);
+        $disk->writeStream(static::$path, $stream, $config);
     }
 
     public function testWriteWithToken()
@@ -58,5 +65,22 @@ class PolicyTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($disk->put('hello6.txt', 'hello6', ['token' => $token]));
         $this->assertEquals('hello6', $disk->read('hello6.txt'));
         $this->assertTrue($disk->delete('hello6.txt'));
+    }
+
+    /**
+     * @depends testWriteStreamAndPersistentFop
+     */
+    public function testPfopAfterUpload()
+    {
+        $qiniu = Yii::$app->qiniu;
+        $pfop = $qiniu->getPersistentFop('testbucket');
+        $fops = Pfop::instance()
+            ->avthumb('flv')
+            ->s('640x360')
+            ->vb('1.25m')
+            ->saveas('testbucket', 'testflv' . date('Y-m-d H:i:s') . '.flv')
+            ->__toString();
+        list(, $err) = $pfop->execute(static::$path, $fops);
+        $this->assertTrue($err === null);
     }
 }
