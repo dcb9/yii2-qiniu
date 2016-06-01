@@ -1,6 +1,8 @@
 <?php
 
 use dcb9\qiniu\Component;
+use dcb9\qiniu\Policy;
+use dcb9\qiniu\Pfop;
 use dcb9\qiniu\Filesystem;
 
 class ComponentTest extends PHPUnit_Framework_TestCase
@@ -64,5 +66,21 @@ class ComponentTest extends PHPUnit_Framework_TestCase
     public function testGetInvalidDisk()
     {
         Yii::$app->qiniu->getDisk('invalidDistId');
+    }
+
+    public function testGetToken()
+    {
+        $token = Yii::$app->qiniu->getUploadToken('testbucket');
+        $this->assertTrue(is_string($token));
+    }
+
+    public function testGetTokenByPolicy()
+    {
+        $policy = new Policy();
+        $policy->callbackUrl = 'http://www.baidu.com';
+        $policy->callbackBody =
+        $policy->persistentOps = Pfop::instance()->avthumb('mp4')->saveas('testbucket', 'test.mp4');
+        $token = Yii::$app->qiniu->getUploadToken('testbucket', null, 3600, $policy);
+        $this->assertTrue(is_string($token));
     }
 }

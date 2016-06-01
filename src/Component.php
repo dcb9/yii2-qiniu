@@ -4,6 +4,7 @@ namespace dcb9\qiniu;
 
 use League\Flysystem\AdapterInterface;
 use Qiniu\Auth;
+use Qiniu\Processing\PersistentFop;
 use Yii;
 use yii\base\InvalidConfigException;
 
@@ -84,5 +85,32 @@ class Component extends \yii\base\Component
     protected function createFilesystem(AdapterInterface $adapter, array $config = null)
     {
         return new Filesystem($adapter, $config);
+    }
+
+    /**
+     * @param string $bucket
+     * @param null $key
+     * @param int $expires
+     * @param null $policy
+     * @param bool $strictPolicy
+     * @return string
+     */
+    public function getUploadToken($bucket, $key = null, $expires = 3600, $policy = null, $strictPolicy = true)
+    {
+        return $this->getAuth()
+            ->uploadToken($bucket, $key, $expires, $policy, $strictPolicy);
+    }
+
+    /**
+     * @param string $bucket
+     * @param null|string $pipeline
+     * @param null|string $notifyUrl
+     * @param bool $force
+     *
+     * @return PersistentFop
+     */
+    public function getPersistentFop($bucket, $pipeline = null, $notifyUrl = null, $force = false)
+    {
+        return new PersistentFop($this->_auth, $bucket, $pipeline, $notifyUrl, $force);
     }
 }
