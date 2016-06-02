@@ -451,4 +451,20 @@ class QiniuAdapter extends AbstractAdapter implements Configurable
 
         return compact('visibility');
     }
+
+    public function writeWithoutKey($contents, Config $config)
+    {
+        $uploadManager = new UploadManager();
+        $token = $this->getUploadToken();
+
+        return $uploadManager->put($token, null, $contents);
+    }
+
+    public function writeStreamWithoutKey($resource, Config $config)
+    {
+        $size = Util::getStreamSize($resource);
+        $token = $config->get('token');
+
+        return $this->streamUpload(null, $resource, $size, 'application/octet-stream', null, $token);
+    }
 }
