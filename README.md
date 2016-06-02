@@ -68,9 +68,12 @@ return [
 $filesystem = Yii::$app->qiniu->getDisk('testBucket');
 
 $filesystem->has('hello.txt');
+
+// 七牛独有 API
+$filesystem->getUrl('hello.txt');  // 获取访问地址
 ```
 
-**[所有可调用的 API](http://flysystem.thephpleague.com/api/)**
+**[其它所有可调用的 API](http://flysystem.thephpleague.com/api/)**
 
 #### [上传策略](http://developer.qiniu.com/article/developer/security/put-policy.html)
 
@@ -87,7 +90,8 @@ $policy->callbackBody = '';
 ```php
 $qiniu = Yii::$app->qiniu;
 
-$token1 = $qiniu->getUploadToken('testbucket');
+$diskName = 'testBucket';
+$token1 = $qiniu->getUploadToken($diskName);
 
 $key = null;
 $expires = 3600;
@@ -103,7 +107,8 @@ $policy->persistentOps = \dcb9\qiniu\Pfop::instance()
     ->__toString();
 $policy->persistentNotifyUrl = 'http://blog.phpor.me';
 
-$token2 = $qiniu->getUploadToken('testbucket', $key, $expires, $policy);
+$diskName = 'testBucket';
+$token2 = $qiniu->getUploadToken($diskName, $key, $expires, $policy);
 ```
 
 #### 使用 Token 上传文件

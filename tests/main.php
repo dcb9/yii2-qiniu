@@ -15,6 +15,12 @@ return [
                     'isPrivate' => false,
                     'zone' => 'zone0',
                 ],
+                'privateBucket' => [
+                    'bucket' => 'testprivatebucket',
+                    'baseUrl' => 'http://o84kf9um3.bkt.clouddn.com',
+                    'isPrivate' => true,
+                    'zone' => 'zone0',
+                ],
             ],
         ],
     ],

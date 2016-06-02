@@ -88,17 +88,20 @@ class Component extends \yii\base\Component
     }
 
     /**
-     * @param string $bucket
+     * @param string $disk
      * @param null $key
      * @param int $expires
      * @param null $policy
      * @param bool $strictPolicy
      * @return string
      */
-    public function getUploadToken($bucket, $key = null, $expires = 3600, $policy = null, $strictPolicy = true)
+    public function getUploadToken($disk, $key = null, $expires = 3600, $policy = null, $strictPolicy = true)
     {
+        /* @var $qiniuAdapter QiniuAdapter */
+        $qiniuAdapter = $this->getDisk($disk)->getAdapter();
+
         return $this->getAuth()
-            ->uploadToken($bucket, $key, $expires, $policy, $strictPolicy);
+            ->uploadToken($qiniuAdapter->bucket, $key, $expires, $policy, $strictPolicy);
     }
 
     /**

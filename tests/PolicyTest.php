@@ -36,7 +36,7 @@ class PolicyTest extends PHPUnit_Framework_TestCase
 
         $policy->persistentNotifyUrl = 'http://blog.phpor.me';
 
-        $token = $qiniu->getUploadToken('testbucket', null, 3600, $policy);
+        $token = $qiniu->getUploadToken('testBucket', null, 3600, $policy);
         $disk = $qiniu->getDisk('testBucket');
 
         $filePath = __DIR__ . '/testmp4.mp4';
@@ -60,7 +60,7 @@ class PolicyTest extends PHPUnit_Framework_TestCase
     public function testWriteWithToken()
     {
         $qiniu = Yii::$app->qiniu;
-        $token = $qiniu->getUploadToken('testbucket');
+        $token = $qiniu->getUploadToken('testBucket');
         $disk = $qiniu->getDisk('testBucket');
         $this->assertTrue($disk->put('hello6.txt', 'hello6', ['token' => $token]));
         $this->assertEquals('hello6', $disk->read('hello6.txt'));

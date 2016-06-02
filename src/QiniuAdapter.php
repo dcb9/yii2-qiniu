@@ -175,14 +175,20 @@ class QiniuAdapter extends AbstractAdapter implements Configurable
     }
 
     /**
-     * @param $path
+     * @param string $path
+     * @param integer $expires 只有 Bucket 为 private 时候该值才有效
      * @return string
      */
-    public function getUrl($path)
+    public function getUrl($path, $expires = 3600)
     {
         $keyEsc = str_replace("%2F", "/", rawurlencode($path));
 
-        return $this->baseUrl . '/' . $keyEsc;
+        $baseUrl = rtrim($this->baseUrl, '/') . '/' . $keyEsc;
+        if ($this->isPrivate) {
+            return $this->getAuth()->privateDownloadUrl($baseUrl, $expires);
+        }
+
+        return $baseUrl;
     }
 
     /**
@@ -450,5 +456,21 @@ class QiniuAdapter extends AbstractAdapter implements Configurable
         }
 
         return compact('visibility');
+    }
+
+    public function writeWithoutKey($contents, Config $config)
+    {
+        $uploadManager = new UploadManager();
+        $token = $this->getUploadToken();
+
+        return $uploadManager->put($token, null, $contents);
+    }
+
+    public function writeStreamWithoutKey($resource, Config $config)
+    {
+        $size = Util::getStreamSize($resource);
+        $token = $config->get('token');
+
+        return $this->streamUpload(null, $resource, $size, 'application/octet-stream', null, $token);
     }
 }
