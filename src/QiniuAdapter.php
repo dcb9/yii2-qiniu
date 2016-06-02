@@ -175,14 +175,20 @@ class QiniuAdapter extends AbstractAdapter implements Configurable
     }
 
     /**
-     * @param $path
+     * @param string $path
+     * @param integer $expires 只有 Bucket 为 private 时候该值才有效
      * @return string
      */
-    public function getUrl($path)
+    public function getUrl($path, $expires = 3600)
     {
         $keyEsc = str_replace("%2F", "/", rawurlencode($path));
 
-        return rtrim($this->baseUrl, '/') . '/' . $keyEsc;
+        $baseUrl = rtrim($this->baseUrl, '/') . '/' . $keyEsc;
+        if ($this->isPrivate) {
+            return $this->getAuth()->privateDownloadUrl($baseUrl, $expires);
+        }
+
+        return $baseUrl;
     }
 
     /**
