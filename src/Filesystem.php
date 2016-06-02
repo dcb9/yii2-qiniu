@@ -10,6 +10,7 @@ use Yii;
  * @package dcb9\qiniu
  *
  * @method QiniuAdapter  getAdapter();
+ * @property-read string $bucket
  */
 class Filesystem extends \League\Flysystem\Filesystem
 {
@@ -46,5 +47,17 @@ class Filesystem extends \League\Flysystem\Filesystem
         $config = $this->prepareConfig($config);
 
         return $this->getAdapter()->writeStreamWithoutKey($resource, $config);
+    }
+
+    public function getBucket()
+    {
+        return $this->getAdapter()->bucket;
+    }
+
+    public function __get($name)
+    {
+        if ($name === 'bucket') {
+            return $this->getBucket();
+        }
     }
 }
