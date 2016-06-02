@@ -90,7 +90,8 @@ $policy->callbackBody = '';
 ```php
 $qiniu = Yii::$app->qiniu;
 
-$token1 = $qiniu->getUploadToken('testbucket');
+$diskName = 'testBucket';
+$token1 = $qiniu->getUploadToken($diskName);
 
 $key = null;
 $expires = 3600;
@@ -106,7 +107,8 @@ $policy->persistentOps = \dcb9\qiniu\Pfop::instance()
     ->__toString();
 $policy->persistentNotifyUrl = 'http://blog.phpor.me';
 
-$token2 = $qiniu->getUploadToken('testbucket', $key, $expires, $policy);
+$diskName = 'testBucket';
+$token2 = $qiniu->getUploadToken($diskName, $key, $expires, $policy);
 ```
 
 #### 使用 Token 上传文件

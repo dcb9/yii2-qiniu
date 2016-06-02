@@ -70,7 +70,7 @@ class ComponentTest extends PHPUnit_Framework_TestCase
 
     public function testGetToken()
     {
-        $token = Yii::$app->qiniu->getUploadToken('testbucket');
+        $token = Yii::$app->qiniu->getUploadToken('testBucket');
         $this->assertTrue(is_string($token));
     }
 
@@ -80,7 +80,7 @@ class ComponentTest extends PHPUnit_Framework_TestCase
         $policy->callbackUrl = 'http://www.baidu.com';
         $policy->callbackBody =
         $policy->persistentOps = Pfop::instance()->avthumb('mp4')->saveas('testbucket', 'test.mp4');
-        $token = Yii::$app->qiniu->getUploadToken('testbucket', null, 3600, $policy);
+        $token = Yii::$app->qiniu->getUploadToken('testBucket', null, 3600, $policy);
         $this->assertTrue(is_string($token));
     }
 }
