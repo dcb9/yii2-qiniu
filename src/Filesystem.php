@@ -3,6 +3,7 @@
 namespace dcb9\qiniu;
 
 use League\Flysystem\Util;
+use Qiniu\Processing\PersistentFop;
 use Yii;
 
 /**
@@ -59,5 +60,21 @@ class Filesystem extends \League\Flysystem\Filesystem
         if ($name === 'bucket') {
             return $this->getBucket();
         }
+    }
+
+    /**
+     * 获取持久化处理类
+     *
+     * 该类用于主动触发异步持久化操作
+     *
+     * @param null|string $pipeline
+     * @param null|string $notifyUrl
+     * @param bool $force
+     *
+     * @return PersistentFop
+     */
+    public function getPersistentFop($pipeline = null, $notifyUrl = null, $force = false)
+    {
+        return new PersistentFop($this->getAdapter()->getAuth(), $this->getBucket(), $pipeline, $notifyUrl, $force);
     }
 }
