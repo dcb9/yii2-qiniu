@@ -103,17 +103,4 @@ class Component extends \yii\base\Component
         return $this->getAuth()
             ->uploadToken($qiniuAdapter->bucket, $key, $expires, $policy, $strictPolicy);
     }
-
-    /**
-     * @param string $bucket
-     * @param null|string $pipeline
-     * @param null|string $notifyUrl
-     * @param bool $force
-     *
-     * @return PersistentFop
-     */
-    public function getPersistentFop($bucket, $pipeline = null, $notifyUrl = null, $force = false)
-    {
-        return new PersistentFop($this->_auth, $bucket, $pipeline, $notifyUrl, $force);
-    }
 }

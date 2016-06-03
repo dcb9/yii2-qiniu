@@ -27,4 +27,11 @@ class QiniuAdapter2Test extends PHPUnit_Framework_TestCase
         $headers = get_headers($url, 1);
         $this->assertTrue((bool)preg_match('/[2|3]0\d/', $headers[0]));
     }
+
+    public function testGetPersistentFop()
+    {
+        $filesystem = Yii::$app->qiniu->getDisk('testBucket');
+        $pfop = $filesystem->getPersistentFop();
+        $this->assertInstanceOf('Qiniu\Processing\PersistentFop', $pfop);
+    }
 }
