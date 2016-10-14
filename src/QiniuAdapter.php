@@ -473,4 +473,10 @@ class QiniuAdapter extends AbstractAdapter implements Configurable
 
         return $this->streamUpload(null, $resource, $size, 'application/octet-stream', null, $token);
     }
+
+    public function fetchUrl($url, $key = null)
+    {
+        return $this->getBucketManager()
+            ->fetch($url, $this->bucket, $key);
+    }
 }
