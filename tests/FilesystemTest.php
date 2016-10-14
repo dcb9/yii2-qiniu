@@ -5,7 +5,7 @@ use dcb9\qiniu\Component;
 class FilesystemTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @expectedException \yii\base\ErrorException
+     * @expectedException \yii\base\InvalidConfigException
      */
     public function testSetDiskWithInvalidConfig()
     {
@@ -21,7 +21,7 @@ class FilesystemTest extends PHPUnit_Framework_TestCase
                 ]
             ],
         ]);
-        $component->setDisk('testBucket', '');
+        $component->setDisk('testBucket', []);
     }
 
     /**
