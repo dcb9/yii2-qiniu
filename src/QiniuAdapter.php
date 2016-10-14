@@ -411,10 +411,10 @@ class QiniuAdapter extends AbstractAdapter implements Configurable
      */
     public function delete($path)
     {
-        list(, $err) = $this->getBucketManager()
+        $error = $this->getBucketManager()
             ->delete($this->bucket, $path);
 
-        return $err === null;
+        return $error === null;
     }
 
     /**
