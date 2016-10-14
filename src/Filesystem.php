@@ -77,4 +77,19 @@ class Filesystem extends \League\Flysystem\Filesystem
     {
         return new PersistentFop($this->getAdapter()->getAuth(), $this->getBucket(), $pipeline, $notifyUrl, $force);
     }
+
+    /**
+     * 第三方资源抓取
+     *
+     * @see http://developer.qiniu.com/code/v6/api/kodo-api/rs/fetch.html
+     * @see BucketManager::fetch()
+     * @param $url
+     * @param null $key
+     *
+     * @return array
+     */
+    public function fetchUrl($url, $key = null)
+    {
+        return $this->getAdapter()->fetchUrl($url, $key);
+    }
 }
