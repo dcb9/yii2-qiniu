@@ -73,12 +73,13 @@ class PolicyTest extends PHPUnit_Framework_TestCase
     public function testPfopAfterUpload()
     {
         $qiniu = Yii::$app->qiniu;
-        $pfop = $qiniu->getPersistentFop('testbucket');
+        $disk = $qiniu->getDisk('testBucket');
+        $pfop = $disk->getPersistentFop();
         $fops = Pfop::instance()
             ->avthumb('flv')
             ->s('640x360')
             ->vb('1.25m')
-            ->saveas('testbucket', 'testflv' . date('Y-m-d H:i:s') . '.flv')
+            ->saveas($disk->getBucket(), 'testflv' . date('Y-m-d H:i:s') . '.flv')
             ->__toString();
         list(, $err) = $pfop->execute(static::$path, $fops);
         $this->assertTrue($err === null);
